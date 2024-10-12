@@ -85,8 +85,29 @@ main {
         height: auto; /* Maintain aspect ratio */
     }
 
-    .choices {
-        flex-direction: column; /* Stack choices on mobile */
-        align-items: center;
+    .choice {
+        position: absolute; /* Use absolute positioning */
+        width: 80%; /* Maintain width for choices */
+    }
+
+    /* Custom Positioning for Each Choice */
+    .choice:nth-child(1) {
+        top: 50%; /* Adjust Y position */
+        left: 10%; /* Adjust X position */
+    }
+
+    .choice:nth-child(2) {
+        top: 70%; /* Adjust Y position */
+        left: 10%; /* Adjust X position */
+    }
+
+    .choice:nth-child(3) {
+        top: 50%; /* Adjust Y position */
+        left: 50%; /* Adjust X position */
+    }
+
+    .choice:nth-child(4) {
+        top: 70%; /* Adjust Y position */
+        left: 50%; /* Adjust X position */
     }
 }
