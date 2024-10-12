@@ -1,10 +1,52 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header Styles */
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    background-color: #fff; /* Placeholder for the logo */
+    border-radius: 50%; /* Makes it a circle */
+}
+
+.menu-button {
+    font-size: 24px; /* Size for menu icon */
+}
+
+/* Title Styles */
+.exam-title {
+    font-size: 32px;
+    margin: 20px 0;
+}
+
 /* Main Content Styles */
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    position: relative; /* Set relative positioning for the main container */
 }
 
 .picture {
@@ -14,22 +56,25 @@ main {
     margin: 20px 0;
 }
 
-/* Choices Styles */
 .choices {
-    position: relative; /* Set the parent to relative for absolute positioning of children */
-    width: 100%; /* Ensure it takes full width */
-    height: 200px; /* Define a height if needed */
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 600px; /* Limits the width of choices */
 }
 
-/* Individual Choices */
 .choice {
-    /* Default styles for desktop */
-    width: 45%; /* Width for two columns */
-    height: 40px; /* Set a height if necessary */
-    margin: 10px; /* Add margin for spacing */
+    width: 80px;
+    height: 40px;
+    background-color: #f4f4f4;
+    border-radius: 20px; /* Makes it an oval */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
 }
 
-/* Responsive Styles for Mobile */
+/* Responsive Styles */
 @media (max-width: 768px) {
     .exam-title {
         font-size: 24px;
@@ -41,33 +86,7 @@ main {
     }
 
     .choices {
-        height: 200px; /* Maintain height for positioning */
-    }
-
-    /* Absolute Positioning for Choices in Mobile View */
-    .choice {
-        position: absolute; /* Use absolute positioning */
-        width: 45%; /* Maintain width for two columns */
-    }
-
-    /* Positioning Each Choice */
-    .choice:nth-child(1) {
-        top: 20px; /* Adjust Y position */
-        left: 5%; /* Adjust X position */
-    }
-
-    .choice:nth-child(2) {
-        top: 20px; /* Adjust Y position */
-        left: 55%; /* Adjust X position */
-    }
-
-    .choice:nth-child(3) {
-        top: 80px; /* Adjust Y position */
-        left: 5%; /* Adjust X position */
-    }
-
-    .choice:nth-child(4) {
-        top: 80px; /* Adjust Y position */
-        left: 55%; /* Adjust X position */
+        flex-direction: column; /* Stack choices on mobile */
+        align-items: center;
     }
 }
