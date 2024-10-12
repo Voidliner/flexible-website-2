@@ -1,4 +1,35 @@
-/* Responsive Styles */
+/* Main Content Styles */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: relative; /* Set relative positioning for the main container */
+}
+
+.picture {
+    width: 300px;
+    height: 200px;
+    background-color: #ccc; /* Placeholder for the image */
+    margin: 20px 0;
+}
+
+/* Choices Styles */
+.choices {
+    position: relative; /* Set the parent to relative for absolute positioning of children */
+    width: 100%; /* Ensure it takes full width */
+    height: 200px; /* Define a height if needed */
+}
+
+/* Individual Choices */
+.choice {
+    /* Default styles for desktop */
+    width: 45%; /* Width for two columns */
+    height: 40px; /* Set a height if necessary */
+    margin: 10px; /* Add margin for spacing */
+}
+
+/* Responsive Styles for Mobile */
 @media (max-width: 768px) {
     .exam-title {
         font-size: 24px;
@@ -10,13 +41,33 @@
     }
 
     .choices {
-        flex-direction: row; /* Arrange in a row */
-        flex-wrap: wrap; /* Allow wrapping */
-        justify-content: center; /* Center items */
+        height: 200px; /* Maintain height for positioning */
     }
 
+    /* Absolute Positioning for Choices in Mobile View */
     .choice {
-        width: 45%; /* Adjust width for two columns */
-        margin: 10px; /* Add margin around each choice */
+        position: absolute; /* Use absolute positioning */
+        width: 45%; /* Maintain width for two columns */
+    }
+
+    /* Positioning Each Choice */
+    .choice:nth-child(1) {
+        top: 20px; /* Adjust Y position */
+        left: 5%; /* Adjust X position */
+    }
+
+    .choice:nth-child(2) {
+        top: 20px; /* Adjust Y position */
+        left: 55%; /* Adjust X position */
+    }
+
+    .choice:nth-child(3) {
+        top: 80px; /* Adjust Y position */
+        left: 5%; /* Adjust X position */
+    }
+
+    .choice:nth-child(4) {
+        top: 80px; /* Adjust Y position */
+        left: 55%; /* Adjust X position */
     }
 }
