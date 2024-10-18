@@ -40,6 +40,7 @@ window.addEventListener('keyup', (event) => {
 
 // Variables for touch movement
 let startTouchX, startTouchY;
+const swipeThreshold = 10; // Minimum distance to consider as a swipe
 
 // Touch events for movement
 canvas.addEventListener('touchstart', (event) => {
@@ -47,29 +48,28 @@ canvas.addEventListener('touchstart', (event) => {
     startTouchX = touch.clientX;
     startTouchY = touch.clientY;
 
-    // Check if the touch is not on the player
-    if (
-        startTouchX < player.x ||
-        startTouchX > player.x + player.width ||
-        startTouchY < player.y ||
-        startTouchY > player.y + player.height
-    ) {
-        player.isMoving = true;
-    }
+    // Reset isMoving
+    player.isMoving = false;
 });
 
 canvas.addEventListener('touchmove', (event) => {
     const touch = event.touches[0];
     const deltaX = touch.clientX - startTouchX;
     const deltaY = touch.clientY - startTouchY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // Update target position based on swipe
-    player.targetX += deltaX;
-    player.targetY += deltaY;
+    // Check if the distance exceeds the swipe threshold
+    if (distance > swipeThreshold) {
+        player.targetX += deltaX;
+        player.targetY += deltaY;
 
-    // Update starting position for next move
-    startTouchX = touch.clientX;
-    startTouchY = touch.clientY;
+        // Update starting position for next move
+        startTouchX = touch.clientX;
+        startTouchY = touch.clientY;
+
+        // Start moving towards the target
+        player.isMoving = true;
+    }
 });
 
 canvas.addEventListener('touchend', () => {
