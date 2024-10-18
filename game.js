@@ -38,21 +38,36 @@ window.addEventListener('keyup', (event) => {
     keys[event.key] = false;
 });
 
-// Touch event for displaying coordinates
+// Variables for touch movement
+let startTouchX, startTouchY;
+
+// Touch events for movement
 canvas.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
-    const touchX = touch.clientX;
-    const touchY = touch.clientY;
+    startTouchX = touch.clientX;
+    startTouchY = touch.clientY;
 
-    // Update target position to where the touch occurred
-    player.targetX = touchX - player.width / 2;
-    player.targetY = touchY - player.height / 2;
-    player.isMoving = true; // Start moving towards the target
+    // Start moving towards the initial touch position
+    player.isMoving = true;
+});
 
-    // Update the label with the touch position
-    positionLabel.style.left = `${touchX + 10}px`;
-    positionLabel.style.top = `${touchY + 10}px`;
-    positionLabel.textContent = `X: ${touchX}, Y: ${touchY}`;
+canvas.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - startTouchX;
+    const deltaY = touch.clientY - startTouchY;
+
+    // Update target position based on swipe
+    player.targetX += deltaX;
+    player.targetY += deltaY;
+
+    // Update starting position for next move
+    startTouchX = touch.clientX;
+    startTouchY = touch.clientY;
+});
+
+canvas.addEventListener('touchend', () => {
+    // Stop moving when the touch ends
+    player.isMoving = false;
 });
 
 // Game loop
@@ -73,9 +88,6 @@ function update() {
         if (distance > 1) {
             player.x += (dx / distance) * player.speed;
             player.y += (dy / distance) * player.speed;
-        } else {
-            // Stop moving if the player has reached the target position
-            player.isMoving = false;
         }
     }
 
