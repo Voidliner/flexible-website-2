@@ -47,8 +47,15 @@ canvas.addEventListener('touchstart', (event) => {
     startTouchX = touch.clientX;
     startTouchY = touch.clientY;
 
-    // Start moving towards the initial touch position
-    player.isMoving = true;
+    // Check if the touch is not on the player
+    if (
+        startTouchX < player.x ||
+        startTouchX > player.x + player.width ||
+        startTouchY < player.y ||
+        startTouchY > player.y + player.height
+    ) {
+        player.isMoving = true;
+    }
 });
 
 canvas.addEventListener('touchmove', (event) => {
