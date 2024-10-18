@@ -22,6 +22,19 @@ const player = {
     color: 'blue'
 };
 
+// Controls
+const keys = {};
+
+// Keydown event for PC controls
+window.addEventListener('keydown', (event) => {
+    keys[event.key] = true;
+});
+
+// Keyup event for PC controls
+window.addEventListener('keyup', (event) => {
+    keys[event.key] = false;
+});
+
 // Touch event for displaying coordinates
 canvas.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
@@ -40,6 +53,12 @@ canvas.addEventListener('touchstart', (event) => {
 
 // Game loop
 function update() {
+    // Handle PC controls
+    if (keys['ArrowUp'] || keys['w']) player.y -= player.speed;
+    if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
+    if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+    if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+
     // Prevent player from going out of bounds
     player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
