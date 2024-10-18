@@ -60,12 +60,9 @@ canvas.addEventListener('touchmove', (event) => {
 
     // Check if the distance exceeds the swipe threshold
     if (distance > swipeThreshold) {
-        player.targetX += deltaX;
-        player.targetY += deltaY;
-
-        // Update starting position for next move
-        startTouchX = touch.clientX;
-        startTouchY = touch.clientY;
+        // Set target position directly to the current touch position
+        player.targetX = touch.clientX - player.width / 2;
+        player.targetY = touch.clientY - player.height / 2;
 
         // Start moving towards the target
         player.isMoving = true;
