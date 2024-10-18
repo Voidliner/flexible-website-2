@@ -19,7 +19,10 @@ const player = {
     width: 30,
     height: 30,
     speed: 5,
-    color: 'blue'
+    color: 'blue',
+    targetX: canvas.width / 2,
+    targetY: canvas.height / 2,
+    isMoving: false, // Flag to indicate if player is moving
 };
 
 // Controls
@@ -41,9 +44,10 @@ canvas.addEventListener('touchstart', (event) => {
     const touchX = touch.clientX;
     const touchY = touch.clientY;
 
-    // Update player position to where the touch occurred
-    player.x = touchX - player.width / 2;
-    player.y = touchY - player.height / 2;
+    // Update target position to where the touch occurred
+    player.targetX = touchX - player.width / 2;
+    player.targetY = touchY - player.height / 2;
+    player.isMoving = true; // Start moving towards the target
 
     // Update the label with the touch position
     positionLabel.style.left = `${touchX + 10}px`;
@@ -58,6 +62,22 @@ function update() {
     if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
     if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
     if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+
+    // Smoothly move the player towards the target if isMoving is true
+    if (player.isMoving) {
+        const dx = player.targetX - player.x;
+        const dy = player.targetY - player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // If the distance is greater than 1, move towards the target
+        if (distance > 1) {
+            player.x += (dx / distance) * player.speed;
+            player.y += (dy / distance) * player.speed;
+        } else {
+            // Stop moving if the player has reached the target position
+            player.isMoving = false;
+        }
+    }
 
     // Prevent player from going out of bounds
     player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
