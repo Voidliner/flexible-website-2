@@ -1,19 +1,14 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Function to resize the canvas
+// Resize the canvas to fit the window
 function resizeCanvas() {
-    const maxWidth = window.innerWidth;
-    const maxHeight = window.innerHeight;
-    const aspectRatio = 800 / 600; // Desired aspect ratio
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    if (maxWidth / maxHeight < aspectRatio) {
-        canvas.width = maxWidth;
-        canvas.height = maxWidth / aspectRatio;
-    } else {
-        canvas.width = maxHeight * aspectRatio;
-        canvas.height = maxHeight;
-    }
+    // Reset player position
+    player.x = canvas.width / 2;
+    player.y = canvas.height / 2;
 }
 
 // Player object
