@@ -1,6 +1,21 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Function to resize the canvas
+function resizeCanvas() {
+    const maxWidth = window.innerWidth;
+    const maxHeight = window.innerHeight;
+    const aspectRatio = 800 / 600; // Desired aspect ratio
+
+    if (maxWidth / maxHeight < aspectRatio) {
+        canvas.width = maxWidth;
+        canvas.height = maxWidth / aspectRatio;
+    } else {
+        canvas.width = maxHeight * aspectRatio;
+        canvas.height = maxHeight;
+    }
+}
+
 // Player object
 const player = {
     x: canvas.width / 2,
@@ -31,32 +46,26 @@ window.addEventListener('keyup', (event) => {
 });
 
 // Touch events for mobile
-const handleTouchStart = (event) => {
+canvas.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
     const { clientX, clientY } = touch;
 
-    if (clientY < canvas.height / 2) {
-        touchControls.up = true;
-    } else {
-        touchControls.down = true;
-    }
+    touchControls.up = clientY < canvas.height / 2;
+    touchControls.down = clientY >= canvas.height / 2;
+    touchControls.left = clientX < canvas.width / 2;
+    touchControls.right = clientX >= canvas.width / 2;
+});
 
-    if (clientX < canvas.width / 2) {
-        touchControls.left = true;
-    } else {
-        touchControls.right = true;
-    }
-};
-
-const handleTouchEnd = () => {
+canvas.addEventListener('touchend', () => {
     touchControls.up = false;
     touchControls.down = false;
     touchControls.left = false;
     touchControls.right = false;
-};
+});
 
-canvas.addEventListener('touchstart', handleTouchStart);
-canvas.addEventListener('touchend', handleTouchEnd);
+// Resize the canvas initially and on window resize
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
 // Game loop
 function update() {
