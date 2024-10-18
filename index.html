@@ -13,6 +13,16 @@
         canvas {
             background: black;
         }
+        #startOverlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 36px;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
         .controls {
             position: absolute;
             bottom: 20px;
@@ -33,6 +43,10 @@
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    <div id="startOverlay">
+        <div>Space Shooter</div>
+        <div>Press Spacebar to Start (PC) or Click Anywhere (Mobile)</div>
+    </div>
     <div class="controls">
         <button class="button" id="leftBtn">←</button>
         <button class="button" id="rightBtn">→</button>
