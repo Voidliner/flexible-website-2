@@ -22,32 +22,27 @@ const player = {
     color: 'blue',
     targetX: canvas.width / 2,
     targetY: canvas.height / 2,
-    isMoving: false,
+    isMoving: false, // Flag to indicate if player is moving
 };
-
-// Bullet object
-const bullets = [];
-const bulletSpeed = 30;
-const firingInterval = 250; // Firing interval in milliseconds
-let lastFiredTime = 0; // Last time a bullet was fired
 
 // Controls
 const keys = {};
-let shooting = false;
 
 // Keydown event for PC controls
 window.addEventListener('keydown', (event) => {
     keys[event.key] = true;
-    if (event.key === ' ') shooting = true; // Start shooting when spacebar is pressed
 });
 
 // Keyup event for PC controls
 window.addEventListener('keyup', (event) => {
     keys[event.key] = false;
-    if (event.key === ' ') shooting = false; // Stop shooting when spacebar is released
 });
 
-// Touch events for movement and shooting
+// Variables for touch movement
+let startTouchX, startTouchY;
+const swipeThreshold = 10; // Minimum distance to consider as a swipe
+
+// Touch events for movement
 canvas.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
     startTouchX = touch.clientX;
@@ -55,9 +50,6 @@ canvas.addEventListener('touchstart', (event) => {
 
     // Reset isMoving
     player.isMoving = false;
-
-    // Start shooting when touching the canvas
-    shooting = true;
 });
 
 canvas.addEventListener('touchmove', (event) => {
@@ -68,32 +60,22 @@ canvas.addEventListener('touchmove', (event) => {
 
     // Check if the distance exceeds the swipe threshold
     if (distance > swipeThreshold) {
+        // Set target position directly to the current touch position
         player.targetX = touch.clientX - player.width / 2;
         player.targetY = touch.clientY - player.height / 2;
+
+        // Start moving towards the target
         player.isMoving = true;
     }
 });
 
 canvas.addEventListener('touchend', () => {
+    // Stop moving when the touch ends
     player.isMoving = false;
-    shooting = false; // Stop shooting when touch ends
 });
-
-// Function to shoot bullets
-function shootBullet() {
-    const bullet = {
-        x: player.x + player.width / 2,
-        y: player.y + player.height / 2,
-        radius: 5,
-        angle: Math.atan2(player.targetY - player.y, player.targetX - player.x),
-    };
-    bullets.push(bullet);
-}
 
 // Game loop
 function update() {
-    const currentTime = Date.now();
-
     // Handle PC controls
     if (keys['ArrowUp'] || keys['w']) player.y -= player.speed;
     if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
@@ -105,7 +87,8 @@ function update() {
         const dx = player.targetX - player.x;
         const dy = player.targetY - player.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-
+        
+        // If the distance is greater than 1, move towards the target
         if (distance > 1) {
             player.x += (dx / distance) * player.speed;
             player.y += (dy / distance) * player.speed;
@@ -116,36 +99,12 @@ function update() {
     player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 
-    // Handle shooting with firing interval
-    if (shooting && currentTime - lastFiredTime > firingInterval) {
-        shootBullet();
-        lastFiredTime = currentTime; // Update the last fired time
-    }
-
-    // Update bullets
-    bullets.forEach((bullet, index) => {
-        bullet.y += Math.sin(bullet.angle) * bulletSpeed; // Move bullet in y direction
-
-        // Remove bullets that are off-screen
-        if (bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
-            bullets.splice(index, 1);
-        }
-    });
-
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the player
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
-
-    // Draw bullets
-    ctx.fillStyle = 'red';
-    bullets.forEach(bullet => {
-        ctx.beginPath();
-        ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI * 2);
-        ctx.fill();
-    });
 
     requestAnimationFrame(update);
 }
